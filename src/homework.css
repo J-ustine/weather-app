@@ -1,0 +1,115 @@
+body {
+  background-color: black;
+}
+.location:hover {
+  cursor: pointer;
+}
+.all {
+  margin: 80px 23% 80px 6%;
+  padding: 10px 0 20px;
+  font-family: "Anton";
+  border: 1px solid white;
+  box-shadow: 8px 8px 2px #ffff00;
+  background-color: black;
+  max-width: 1200px;
+}
+form {
+  text-align: left;
+}
+input {
+  padding: 5px 80% 5px 3px;
+  border: 1px solid black;
+  box-shadow: 3px 3px 2px #ffff00;
+}
+h3 {
+  font-size: 20px;
+}
+.meteo-city {
+  color: #08defa;
+  text-shadow: #ffff00;
+  text-align: left;
+  margin: 30px 0;
+}
+.temperature {
+  position: absolute;
+  left: 520px;
+  top: 155px;
+  color: #08defa;
+}
+.temperature a {
+  color: white;
+  text-decoration: none;
+  position: relative;
+  top: -63px;
+}
+#number {
+  font-size: 90px;
+}
+.media-meteo {
+  position: absolute;
+  width: 250px;
+  top: 135px;
+  left: 700px;
+}
+h1 {
+  margin: 10px 0 0 0;
+}
+h2 h1 {
+  border: 10px solid #31919d;
+}
+.day {
+  margin-top: 10px;
+  background-color: white;
+  text-align: center;
+  position: relative;
+  border: 1px solid #000000;
+  color: black;
+  transition: all 200ms ease-in-out;
+  box-shadow: 3px 3px 3px #08defa;
+}
+.day:hover {
+  color: #ffff00;
+  text-shadow: 1px 1px 1px black;
+  cursor: pointer;
+}
+.news-city {
+  margin: 0px 5px;
+  position: absolute;
+  width: 16%;
+  min-height: 35%;
+  max-width: 250px;
+  top: 10%;
+  left: 80%;
+  border: 1px solid white;
+  background-color: #000000;
+  color: white;
+  transition: all 250ms ease-in-out;
+  padding: 5px;
+  box-shadow: 3px 3px 2px #08defa;
+  font-family: "Anton";
+}
+.news-block {
+  width: 100%;
+  margin: 10px 0;
+  padding: 5px;
+  border: 1px solid #000000;
+}
+ul {
+  padding: 5px 5px;
+}
+.news-title {
+  line-height: 2;
+  font-size: 12px;
+  list-style: none;
+  font-weight: bold;
+}
+.description-news {
+  font-size: 10px;
+  list-style: none;
+  max-height: 20%;
+  color: grey;
+}
+.news-block:hover {
+  background-color: #08defa;
+  cursor: pointer;
+}
