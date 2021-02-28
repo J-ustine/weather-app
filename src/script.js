@@ -22,8 +22,6 @@ function formatDate(date) {
   return `${days[currentDays]} ${currentDate} ${currentHour}:${currentMinute}`;
 }
 
-document.querySelector("#currentDate").innerHTML = formatDate(new Date());
-
 function showData(response) {
   document.querySelector("#citySearch").innerHTML = response.data.name;
   //document.querySelector("#cityNews").innerHTML = response.data.name;
@@ -33,6 +31,7 @@ function showData(response) {
   document.querySelector("#precipitation").innerHTML =
     response.data.main.humidity;
   document.querySelector("#wind").innerHTML = response.data.wind.speed;
+  celsiusTemperature = Math.round(response.data.main.temp);
 }
 function search(city) {
   let apiKey = "94f7962a3f3dc99473c20e9f4d42062e";
@@ -49,8 +48,6 @@ function handleSearch(event) {
   let city = document.querySelector("#form-input").value;
   search(city);
 }
-
-document.querySelector("#search").addEventListener("submit", handleSearch);
 
 function findLocation() {
   navigator.geolocation.getCurrentPosition(findDataLocation);
@@ -92,6 +89,32 @@ function showNews(response) {
   document.querySelector("#description3").innerHTML =
     response.data.data[2].description;
 }
+
+function showCelsiusTemperature(event) {
+  event.preventDefault();
+  document.querySelector("#number").innerHTML = celsiusTemperature;
+  document.querySelector("#celsius").classList.add("active");
+  document.querySelector("#farenheit").classList.remove("active");
+}
+function showFarenheitTemperature(event) {
+  event.preventDefault();
+  document.querySelector("#number").innerHTML = Math.round(
+    (celsiusTemperature * 9) / 5 + 32
+  );
+  document.querySelector("#celsius").classList.remove("active");
+  document.querySelector("#farenheit").classList.add("active");
+}
+
+let celsiusTemperature = null;
+
+document.querySelector("#currentDate").innerHTML = formatDate(new Date());
+document
+  .querySelector("#celsius")
+  .addEventListener("click", showCelsiusTemperature);
+document
+  .querySelector("#farenheit")
+  .addEventListener("click", showFarenheitTemperature);
+document.querySelector("#search").addEventListener("submit", handleSearch);
 document.querySelector(".location").addEventListener("click", findLocation);
 
-search("London");
+search("Sevilla");

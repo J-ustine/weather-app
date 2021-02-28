@@ -33,11 +33,22 @@ h3 {
   margin: 10px 0 0 0;
   color: #08defa;
 }
-.temperature a {
+.unit {
+  position: relative;
   color: white;
-  text-decoration: none;
+  top: -63px;
+}
+.temperature a {
   position: relative;
   top: -63px;
+}
+.active {
+  text-decoration: none;
+  color: white;
+}
+.active:hover {
+  text-decoration: none;
+  color: white;
 }
 #number {
   font-size: 90px;
