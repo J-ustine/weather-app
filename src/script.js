@@ -32,7 +32,25 @@ function showData(response) {
     response.data.main.humidity;
   document.querySelector("#wind").innerHTML = response.data.wind.speed;
   celsiusTemperature = Math.round(response.data.main.temp);
+  document.querySelector("#description").innerHTML =
+    response.data.weather[0].main;
+  let description = response.data.weather[0].main;
+  console.log(description);
+  if (description === "Clear") {
+    document.querySelector("#mediaMeteo").src = sunIconSrc;
+  } else {
+    if (description === "Clouds") {
+      document.querySelector("#mediaMeteo").src = cloudIconSrc;
+    } else {
+      if (description === "Rain") {
+        document.querySelector("#mediaMeteo").src = rainIconSrc;
+      } else {
+        document.querySelector("#mediaMeteo").src = snowIconSrc;
+      }
+    }
+  }
 }
+
 function search(city) {
   let apiKey = "94f7962a3f3dc99473c20e9f4d42062e";
   let unit = "metric";
@@ -65,12 +83,15 @@ function findDataLocation(position) {
 }
 
 function showDataLocation(response) {
+  document.querySelector("#citySearch").innerHTML = response.data.name;
   document.querySelector("#number").innerHTML = Math.round(
     response.data.main.temp
   );
   document.querySelector("#precipitation").innerHTML =
     response.data.main.humidity;
   document.querySelector("#wind").innerHTML = response.data.wind.speed;
+  document.querySelector("#description").innerHTML =
+    response.data.weather[0].main;
 }
 
 function showCity(response) {
@@ -118,3 +139,8 @@ document.querySelector("#search").addEventListener("submit", handleSearch);
 document.querySelector(".location").addEventListener("click", findLocation);
 
 search("Sevilla");
+
+let rainIconSrc = "media/Rain2.svg";
+let sunIconSrc = "media/Sun2.svg";
+let snowIconSrc = "media/Snow2.svg";
+let cloudIconSrc = "media/cloud.svg";
