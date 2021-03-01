@@ -76,7 +76,9 @@ h2 h1 {
 .day:hover {
   color: #ffff00;
   text-shadow: 1px 1px 1px black;
-  cursor: pointer;
+}
+.minMax {
+  font-size: 12px;
 }
 .news-city {
   margin: 0px 5px;

@@ -1,4 +1,5 @@
-function formatDate(date) {
+function formatDate(timestamp) {
+  let date = new Date(timestamp);
   let days = [
     "Sunday",
     "Monday",
@@ -8,22 +9,28 @@ function formatDate(date) {
     "Friday",
     "Saturday",
   ];
-  let currentDays = date.getDay();
+  let day = days[date.getDay()];
   let currentDate = date.getDate();
-  let currentHour = date.getHours();
-  if (currentHour < 10) {
-    currentHour = `0${currentHour}`;
+  return `${day} ${currentDate} ${formatHour(timestamp)}`;
+}
+function formatHour(timestamp) {
+  let date = new Date(timestamp);
+  let hour = date.getHours();
+  if (hour < 10) {
+    hour = `0${hour}`;
   }
-  let currentMinute = date.getMinutes();
-  if (currentMinute < 10) {
-    currentMinute = `0${currentMinute}`;
+  let minute = date.getMinutes();
+  if (minute < 10) {
+    minute = `0${minute}`;
   }
-
-  return `${days[currentDays]} ${currentDate} ${currentHour}:${currentMinute}`;
+  return `${hour}:${minute}`;
 }
 
 function showData(response) {
   document.querySelector("#citySearch").innerHTML = response.data.name;
+  document.querySelector("#currentDate").innerHTML = formatDate(
+    response.data.dt * 1000
+  );
   //document.querySelector("#cityNews").innerHTML = response.data.name;
   document.querySelector("#number").innerHTML = Math.round(
     response.data.main.temp
@@ -35,7 +42,6 @@ function showData(response) {
   document.querySelector("#description").innerHTML =
     response.data.weather[0].main;
   let description = response.data.weather[0].main;
-  console.log(description);
   if (description === "Clear") {
     document.querySelector("#mediaMeteo").src = sunIconSrc;
   } else {
@@ -51,13 +57,60 @@ function showData(response) {
   }
 }
 
+function showForecast(response) {
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = null;
+  let forecast = null;
+  let description = null;
+  function srcImage() {
+    if (description === "Clear") {
+      return sunIconSrc;
+    } else {
+      if (description === "Clouds") {
+        return cloudIconSrc;
+      } else {
+        if (description === "Rain") {
+          return rainIconSrc;
+        } else {
+          return snowIconSrc;
+        }
+      }
+    }
+  }
+  for (let index = 0; index < 6; index++) {
+    forecast = response.data.list[index];
+    description = response.data.list[index].weather[0].main;
+    forecastElement.innerHTML += `            
+  <div class="col-2">
+    <div class="day">
+      <span class="hour">${formatHour(forecast.dt * 1000)}</span>
+      <br />
+      <img src="${srcImage()}" alt="sun" width="110px/>
+      <br />
+      <span id="temperatureDay1">${Math.round(forecast.main.temp)}</span>°C 
+      <br />
+      <span class="minMax">
+        <strong id="temperatureMinDay1">${Math.round(
+          forecast.main.temp_min
+        )}</strong>°C -
+        <span id="temperatureMaxDay1">${Math.round(
+          forecast.main.temp_max
+        )}</span>°C</span>
+    </div>
+  </div>
+  `;
+  }
+}
+
 function search(city) {
   let apiKey = "94f7962a3f3dc99473c20e9f4d42062e";
   let unit = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${unit}`;
+  axios.get(apiUrl).then(showData);
+  let apiUrlForecast = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrlForecast).then(showForecast);
   //let apiKeyNews = "4f8ff1068c6cb0df700d188319fcfdb0";
   //let apiUrlNews = `http://api.mediastack.com/v1/news?access_key=${apiKeyNews}&keywords=${city}&sources=en`;
-  axios.get(apiUrl).then(showData);
   //axios.get(apiUrlNews).then(showNews);
 }
 
@@ -77,21 +130,9 @@ function findDataLocation(position) {
   let apiKey = "94f7962a3f3dc99473c20e9f4d42062e";
   let unit = "metric";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=${unit}`;
-  axios.get(apiUrl).then(showDataLocation);
+  axios.get(apiUrl).then(showData);
   //let apiUrlLocation = `https://api.openweathermap.org/data/2.5/find?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   //axios.get(apiUrlLocation).then(showCity);
-}
-
-function showDataLocation(response) {
-  document.querySelector("#citySearch").innerHTML = response.data.name;
-  document.querySelector("#number").innerHTML = Math.round(
-    response.data.main.temp
-  );
-  document.querySelector("#precipitation").innerHTML =
-    response.data.main.humidity;
-  document.querySelector("#wind").innerHTML = response.data.wind.speed;
-  document.querySelector("#description").innerHTML =
-    response.data.weather[0].main;
 }
 
 function showCity(response) {
@@ -99,17 +140,13 @@ function showCity(response) {
   document.querySelector("#cityNews").innerHTML = response.data.list[0].name;
 }
 
-function showNews(response) {
-  document.querySelector("#title1").innerHTML = response.data.data[0].title;
-  document.querySelector("#description1").innerHTML =
-    response.data.data[0].description;
-  document.querySelector("#title2").innerHTML = response.data.data[1].title;
-  document.querySelector("#description2").innerHTML =
-    response.data.data[1].description;
-  document.querySelector("#title3").innerHTML = response.data.data[2].title;
-  document.querySelector("#description3").innerHTML =
-    response.data.data[2].description;
-}
+//function showNews(response) {
+//document.querySelector("#title1").innerHTML = response.data.data[0].title;
+//document.querySelector("#description1").innerHTML = response.data.data[0].description;
+//document.querySelector("#title2").innerHTML = response.data.data[1].title;
+//document.querySelector("#description2").innerHTML = response.data.data[1].description;
+//document.querySelector("#title3").innerHTML = response.data.data[2].title;
+//document.querySelector("#description3").innerHTML = response.data.data[2].description;}
 
 function showCelsiusTemperature(event) {
   event.preventDefault();
@@ -128,7 +165,6 @@ function showFarenheitTemperature(event) {
 
 let celsiusTemperature = null;
 
-document.querySelector("#currentDate").innerHTML = formatDate(new Date());
 document
   .querySelector("#celsius")
   .addEventListener("click", showCelsiusTemperature);
