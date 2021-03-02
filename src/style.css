@@ -1,7 +1,7 @@
 .all {
   margin: 30px auto 10px;
   padding: 10px 0 20px;
-  font-family: "Anton", "Arial Black";
+  font-family: "Anton", sans-serif;
   border: 1px solid black;
   box-shadow: 8px 8px 2px #ffff00;
   background-color: black;
